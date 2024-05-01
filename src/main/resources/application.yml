@@ -1,0 +1,36 @@
+spring:
+  config:
+    import:
+      - consul:172.17.0.1:8500
+      - vault://secret/secrets
+  application:
+    name: secrets
+  cloud:
+    consul:
+      config:
+        defaultContext: application
+        data-key: data
+        profileSeparator: '::'
+        format: yaml
+        enabled: true
+        prefixes:
+          - config
+    vault:
+      uri: http://172.17.0.1:8200
+      authentication: TOKEN
+      token: 89d6ec8d-103c-6085-d6d9-44d1d2ba5377
+      database:
+        backend:
+          database
+  datasource:
+    username: ${database.username}
+    password: ${database.password}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+    database: postgresql
+  liquibase:
+    enabled: true
+    change-log: classpath:liquibase/master.yml
